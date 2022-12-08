@@ -7,7 +7,7 @@
     <data>
         <variable
             name="Login"
-            type="com.example.bykeandroid.Login" />
+            type="com.example.bykeandroid.LoginFragment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
