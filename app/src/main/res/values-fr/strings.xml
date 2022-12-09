@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="user_name">Pseudo</string>
+    <string name="last_name">Nom</string>
+    <string name="first_name">Prénom</string>
+    <string name="birthday">Date de naissance</string>
+    <string name="password">Mot de passe</string>
+    <string name="input_username_hint">Entrez votre pseudo</string>
+    <string name="input_lastname_hint">Entrez votre Nom</string>
+    <string name="input_firstname_hint">Entrez votre prénom</string>
+    <string name="input_birthday_hint">Entrez votre date de naissance</string>
+    <string name="login">S\'identifier</string>
+    <string name="input_password_hint">Entrez votre mot de passe</string>
+    <string name="no_account_sign_up">Pas de compte? Inscrivez-vous!</string>
+    <string name="account_log_in">Vous avez un compte? Identifiez-vous!</string>
+    <string name="username_missing">Veuillez entrer un pseudo</string>
+    <string name="password_missing">Veuillez entrer un mot de passe</string>
+    <string name="login_fail">Pseudo ou mot de passe incorrect</string>
+    <string name="sign_up">S\'inscrire</string>
+    <string name="signing_up">Inscription</string>
+    <string name="username_already_taken">Pseudo déjà utilisé</string>
+    <string name="login_fail_try_again">Echec de l\'identification, veuillez réessayer</string>
+    <string name="sign_up_fail_try_again">Echec de l\'inscription, veuillez réessayer</string>
+    <string name="cancel">Annuler</string>
+    <string name="connection_failed">Echec de la connexion. Continuer?</string>
+    <string name="connect">Connexion…</string>
+</resources>

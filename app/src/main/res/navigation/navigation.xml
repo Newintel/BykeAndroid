@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/loginFragment">
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.bykeandroid.view.LoginFragment"
+        android:label="LoginFragment" >
+        <action
+            android:id="@+id/loginToSignUp"
+            app:destination="@id/signUp" >
+            <argument
+                android:name="username"
+                android:defaultValue="" />
+        </action>
+        <action
+            android:id="@+id/loginToHome"
+            app:destination="@id/homePageFragment" />
+        <argument
+            android:name="message"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue=""/>
+    </fragment>
+    <fragment
+        android:id="@+id/signUp"
+        android:name="com.example.bykeandroid.view.SignUpFragment"
+        android:label="SignUp" >
+        <argument
+            android:name="username"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="" />
+        <action
+            android:id="@+id/signUpToHome"
+            app:destination="@id/homePageFragment" />
+        <action
+            android:id="@+id/signUpToLogin"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <activity
+        android:id="@+id/splashScreenActivity"
+        android:name="com.example.bykeandroid.view.SplashScreenActivity"
+        android:label="activity_splash_screen"
+        tools:layout="@layout/activity_splash_screen" />
+    <fragment
+        android:id="@+id/homePageFragment"
+        android:name="com.example.bykeandroid.view.HomePageFragment"
+        android:label="fragment_home_page"
+        tools:layout="@layout/fragment_home_page" />
+    <argument
+        android:name="message" />
+</navigation>
