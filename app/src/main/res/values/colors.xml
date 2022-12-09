@@ -14,4 +14,5 @@
     <color name="colorText">#505050</color>
     <color name="colorTextWhite">#909090</color>
     <color name="colorButtonBackground">#0aa06e</color>
+    <color name="red">#FF0000</color>
 </resources>

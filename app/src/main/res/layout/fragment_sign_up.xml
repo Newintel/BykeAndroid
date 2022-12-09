@@ -2,12 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.mydatabaseapp.login.LoginFragment">
+    tools:context="com.example.bykeandroid.view.MainActivity">
 
     <data>
         <variable
-            name="SignUp"
-            type="com.example.bykeandroid.SignUp" />
+            name="viewModel"
+            type="com.example.bykeandroid.viewmodel.SignUpViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,13 +15,13 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/tv_sign_up"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="80dp"
             android:layout_marginTop="80dp"
             android:layout_marginEnd="80dp"
-            android:text="Sign Up"
+            android:text="@string/signing_up"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -31,200 +31,208 @@
 
 
         <TextView
-            android:id="@+id/userNameTextView"
+            android:id="@+id/tv_username"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="80dp"
             android:layout_marginTop="40dp"
             android:layout_marginEnd="80dp"
-            android:text="User Name"
+            android:text="@string/user_name"
             android:textAlignment="viewStart"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_sign_up" />
 
         <TextView
-            android:id="@+id/lastNameTextView"
+            android:id="@+id/tv_lastname"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="80dp"
             android:layout_marginTop="60dp"
             android:layout_marginEnd="80dp"
-            android:text="Last Name"
+            android:text="@string/last_name"
             android:textAlignment="viewStart"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/userNameTextView" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_username" />
 
         <TextView
-            android:id="@+id/firstNameTextView"
+            android:id="@+id/tv_firstname"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="80dp"
             android:layout_marginTop="60dp"
             android:layout_marginEnd="80dp"
-            android:text="First Name"
+            android:text="@string/first_name"
             android:textAlignment="viewStart"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lastNameTextView" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_lastname" />
 
         <TextView
-            android:id="@+id/birthdayTextView"
+            android:id="@+id/tv_birthday"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="80dp"
             android:layout_marginTop="60dp"
             android:layout_marginEnd="80dp"
-            android:text="Birthday"
+            android:text="@string/birthday"
             android:textAlignment="viewStart"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/firstNameTextView" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_firstname" />
 
         <TextView
-            android:id="@+id/passwordTextView"
+            android:id="@+id/tv_pwd"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="80dp"
             android:layout_marginTop="68dp"
             android:layout_marginEnd="80dp"
-            android:text="Password"
+            android:text="@string/password"
             android:textAlignment="viewStart"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/birthdayTextView" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_birthday" />
 
         <EditText
-            android:id="@+id/userNameTextField"
+            android:id="@+id/et_username"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="80dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="80dp"
             android:ems="10"
-            android:hint="Enter your Username"
+            android:hint="@string/input_username_hint"
             android:importantForAutofill="no"
             android:inputType="textPersonName"
-            android:text="@={SignUp.inputUsername}"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/userNameTextView" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_username" />
 
 
 
         <EditText
-            android:id="@+id/lastNameTextField"
+            android:id="@+id/et_lastname"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="80dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="80dp"
             android:ems="10"
-            android:hint="Enter your Last Name"
+            android:hint="@string/input_lastname_hint"
             android:importantForAutofill="no"
             android:inputType="textPersonName"
-            android:text="@={SignUp.inputUsername}"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lastNameTextView" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_lastname" />
 
         <EditText
-            android:id="@+id/firstNameTextField"
+            android:id="@+id/et_firstname"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="80dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="80dp"
             android:ems="10"
-            android:hint="Enter your First Name"
+            android:hint="@string/input_firstname_hint"
             android:importantForAutofill="no"
             android:inputType="textPersonName"
-            android:text="@={SignUp.inputUsername}"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/firstNameTextView" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_firstname" />
 
         <EditText
-            android:id="@+id/birthdayTextField"
+            android:id="@+id/et_birthday"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="80dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="80dp"
+            android:calendarViewShown="false"
             android:ems="10"
-            android:hint="Enter your Birthday"
+            android:hint="@string/input_birthday_hint"
             android:importantForAutofill="no"
-            android:inputType="textPersonName"
-            android:text="@={SignUp.inputUsername}"
+            android:inputType="date"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/birthdayTextView" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_birthday" />
 
         <EditText
-            android:id="@+id/passwordTextField"
+            android:id="@+id/et_pwd"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="80dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="80dp"
             android:ems="10"
-            android:hint="Enter your password"
+            android:hint="@string/input_password_hint"
             android:importantForAutofill="no"
-            android:inputType="textPersonName"
-            android:text="@={SignUp.inputPassword}"
+            android:inputType="textPassword"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/passwordTextView" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_pwd" />
 
         <Button
-            android:id="@+id/submitButton"
+            android:id="@+id/btn_sign_up"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="40dp"
             android:layout_marginEnd="16dp"
-            android:onClick="@{()->SignUp.loginButton()}"
-            android:text="Sign Up"
+            android:text="@string/sign_up"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/passwordTextField" />
+            app:layout_constraintTop_toBottomOf="@+id/et_pwd" />
 
         <TextView
-            android:id="@+id/SignUpButton"
+            android:id="@+id/btn_sign_in"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:onClick="@{()->SignUp.signUP()}"
-            android:text="Sign in!"
+            android:text="@string/account_log_in"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/submitButton" />
+            app:layout_constraintTop_toBottomOf="@+id/btn_sign_up" />
+
+        <ImageButton
+            android:id="@+id/bt_view_password"
+            android:layout_width="53dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginEnd="24dp"
+            app:layout_constraintBottom_toBottomOf="@+id/et_pwd"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/et_pwd"
+            app:layout_constraintTop_toBottomOf="@+id/tv_pwd"
+            app:layout_constraintVertical_bias="1.0"
+            app:srcCompat="@android:drawable/ic_menu_view" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

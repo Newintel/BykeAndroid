@@ -6,31 +6,50 @@
     app:startDestination="@id/loginFragment">
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.bykeandroid.LoginFragment"
+        android:name="com.example.bykeandroid.view.LoginFragment"
         android:label="LoginFragment" >
         <action
-            android:id="@+id/action_loginFragment_to_signUp2"
-            app:destination="@id/signUp2" />
+            android:id="@+id/loginToSignUp"
+            app:destination="@id/signUp" >
+            <argument
+                android:name="username"
+                android:defaultValue="" />
+        </action>
         <action
-            android:id="@+id/action_loginFragment_to_mainActivity2"
-            app:destination="@id/mainActivity2" />
+            android:id="@+id/loginToHome"
+            app:destination="@id/homePageFragment" />
+        <argument
+            android:name="message"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue=""/>
     </fragment>
     <fragment
-        android:id="@+id/signUp2"
-        android:name="com.example.bykeandroid.SignUp"
+        android:id="@+id/signUp"
+        android:name="com.example.bykeandroid.view.SignUpFragment"
         android:label="SignUp" >
+        <argument
+            android:name="username"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="" />
         <action
-            android:id="@+id/action_signUp2_to_mainActivity2"
-            app:destination="@id/mainActivity2" />
+            android:id="@+id/signUpToHome"
+            app:destination="@id/homePageFragment" />
+        <action
+            android:id="@+id/signUpToLogin"
+            app:destination="@id/loginFragment" />
     </fragment>
     <activity
-        android:id="@+id/splashScreenActivity2"
-        android:name="com.example.bykeandroid.SplashScreenActivity"
+        android:id="@+id/splashScreenActivity"
+        android:name="com.example.bykeandroid.view.SplashScreenActivity"
         android:label="activity_splash_screen"
         tools:layout="@layout/activity_splash_screen" />
-    <activity
-        android:id="@+id/mainActivity2"
-        android:name="com.example.bykeandroid.MainActivity"
-        android:label="activity_main"
-        tools:layout="@layout/activity_main" />
+    <fragment
+        android:id="@+id/homePageFragment"
+        android:name="com.example.bykeandroid.view.HomePageFragment"
+        android:label="fragment_home_page"
+        tools:layout="@layout/fragment_home_page" />
+    <argument
+        android:name="message" />
 </navigation>

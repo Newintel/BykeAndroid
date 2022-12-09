@@ -1,5 +1,28 @@
 <resources>
-    <string name="app_name">BykeAndroid</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="app_name" translatable="false">Byke</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="user_name">Username</string>
+    <string name="last_name">Last Name</string>
+    <string name="first_name">First Name</string>
+    <string name="birthday">Birthday</string>
+    <string name="password">Password</string>
+    <string name="input_username_hint">Enter your Username</string>
+    <string name="input_lastname_hint">Enter your Last Name</string>
+    <string name="input_firstname_hint">Enter your First Name</string>
+    <string name="input_birthday_hint">Enter your Birthday</string>
+    <string name="login">Login</string>
+    <string name="input_password_hint">Enter your password</string>
+    <string name="no_account_sign_up">No account? Sign Up!</string>
+    <string name="account_log_in">Already have an account? Sign in!</string>
+    <string name="username_missing">Please enter a username</string>
+    <string name="password_missing">Please enter a password</string>
+    <string name="login_fail">Username or password is incorrect</string>
+    <string name="signing_up">Sign up</string>
+    <string name="username_already_taken">Username already taken</string>
+    <string name="login_fail_try_again">Log in failed, please try again</string>
+    <string name="sign_up_fail_try_again">Sign up failed, please try again</string>
+    <string name="ok" translatable="false">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="connection_failed">Connection failed. Continue?</string>
+    <string name="connect">Connection…</string>
 </resources>

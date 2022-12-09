@@ -2,12 +2,11 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.mydatabaseapp.login.LoginFragment">
-
+    tools:context="com.example.bykeandroid.view.MainActivity">
     <data>
         <variable
-            name="Login"
-            type="com.example.bykeandroid.LoginFragment" />
+            name="viewModel"
+            type="com.example.bykeandroid.viewmodel.LoginViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,13 +14,13 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/tv_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="80dp"
             android:layout_marginTop="80dp"
             android:layout_marginEnd="80dp"
-            android:text="login"
+            android:text="@string/login"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -30,98 +29,108 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/userNameTextView"
+            android:id="@+id/tv_username"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="80dp"
             android:layout_marginTop="73dp"
             android:layout_marginEnd="80dp"
-            android:text="User Name"
+            android:text="@string/user_name"
             android:textAlignment="viewStart"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_login" />
 
         <TextView
-            android:id="@+id/passwordTextView"
+            android:id="@+id/tv_pwd"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="80dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="80dp"
-            android:text="Password"
+            android:text="@string/password"
             android:textAlignment="viewStart"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/userNameTextField" />
+            app:layout_constraintTop_toBottomOf="@+id/et_username" />
 
         <EditText
-            android:id="@+id/userNameTextField"
+            android:id="@+id/et_username"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="80dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="80dp"
             android:ems="10"
-            android:hint="Enter your Username"
+            android:hint="@string/input_username_hint"
             android:importantForAutofill="no"
             android:inputType="textPersonName"
-            android:text="@={Login.inputUsername}"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/userNameTextView" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_username" />
 
         <EditText
-            android:id="@+id/passwordTextField"
+            android:id="@+id/et_pwd"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="80dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="80dp"
             android:ems="10"
-            android:hint="Enter your password"
+            android:hint="@string/input_password_hint"
             android:importantForAutofill="no"
-            android:inputType="textPersonName"
-            android:text="@={Login.inputPassword}"
+            android:inputType="textPassword"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/passwordTextView" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_pwd" />
 
         <Button
-            android:id="@+id/submitButton"
+            android:id="@+id/btn_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="48dp"
             android:layout_marginEnd="16dp"
-            android:onClick="@{()->Login.loginButton()}"
-            android:text="Login"
+            android:text="@string/login"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/passwordTextField" />
+            app:layout_constraintTop_toBottomOf="@+id/et_pwd" />
 
         <TextView
-            android:id="@+id/SignUpButton"
+            android:id="@+id/btn_signup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="52dp"
-            android:text="Sing Up!"
+            android:text="@string/no_account_sign_up"
             android:textStyle="bold"
-            android:onClick="@{()->Login.signUP()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/submitButton" />
+            app:layout_constraintTop_toBottomOf="@+id/btn_login" />
+        <ImageButton
+            android:id="@+id/bt_view_password"
+            android:layout_width="53dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginEnd="24dp"
+            app:layout_constraintBottom_toBottomOf="@+id/et_pwd"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/et_pwd"
+            app:layout_constraintTop_toBottomOf="@+id/tv_pwd"
+            app:layout_constraintVertical_bias="1.0"
+            app:srcCompat="@android:drawable/ic_menu_view" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
