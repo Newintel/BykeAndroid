@@ -79,7 +79,7 @@ class SignUpFragment : Fragment() {
                                 return@connect
                             }
                             val directions = if (res2.isSuccessful)
-                                SignUpFragmentDirections.signUpToHome()
+                                SignUpFragmentDirections.signUpToScan()
                                 else SignUpFragmentDirections.signUpToLogin(getString(R.string.login_fail_try_again))
                             directions.also {
                                 findNavController().navigate(it)

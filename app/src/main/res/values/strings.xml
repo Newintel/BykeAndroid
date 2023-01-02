@@ -25,4 +25,9 @@
     <string name="cancel">Cancel</string>
     <string name="connection_failed">Connection failed. Continue?</string>
     <string name="connect">Connection…</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="read_qr_code">Read QR Code</string>
+    <string name="scan_ble">Start scanning devices</string>
+    <string name="no_code_found">No QrCode found. Please scan the QRCode on your device</string>
+    <string name="no_qr_code_found">"No QR code found. Please take a wider or clearer picture "</string>
 </resources>

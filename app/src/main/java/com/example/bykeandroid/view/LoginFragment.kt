@@ -67,7 +67,7 @@ class LoginFragment: Fragment() {
                         return@connect
                     }
                     if (res.isSuccessful) {
-                        LoginFragmentDirections.loginToHome().also {
+                        LoginFragmentDirections.loginToScan().also {
                             findNavController().navigate(it)
                         }
                     } else {

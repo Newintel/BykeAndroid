@@ -24,4 +24,8 @@
     <string name="cancel">Annuler</string>
     <string name="connection_failed">Echec de la connexion. Continuer?</string>
     <string name="connect">Connexion…</string>
+    <string name="read_qr_code">Lire QR Code</string>
+    <string name="scan_ble">Lancer la recherche</string>
+    <string name="no_code_found">Pas de QR code trouvé. Veuillez scanner le QR code de votre appareil</string>
+    <string name="no_qr_code_found">Pas de QR Code trouvé. Veuillez vous rapprocher ou prendre une image plus claire</string>
 </resources>
