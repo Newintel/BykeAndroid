@@ -23,7 +23,7 @@ import com.google.android.gms.vision.barcode.BarcodeDetector
 class ConnectionFragment : Fragment() {
     private lateinit var detector: BarcodeDetector
     private lateinit var binding: FragmentConnectionBinding
-    private var macAdress : String? = null
+    private lateinit var activity : MainActivity
 
     companion object {
         private const val REQUEST_IMAGE_CAPTURE = 1
@@ -66,6 +66,7 @@ class ConnectionFragment : Fragment() {
         }
         val frame: Frame = Frame.Builder().setBitmap(image).build()
         val barcodes: SparseArray<Barcode> = detector.detect(frame)
+        var macAdress : String? = null
         barcodes.valueIterator().forEach { barcode ->
             val rawValue = barcode.rawValue
             if (rawValue.length == 17 && rawValue.count() {
@@ -76,10 +77,10 @@ class ConnectionFragment : Fragment() {
         }
 
         if (macAdress != null) {
-            binding.qrTv.text = "Found MAC address: $macAdress"
-            binding.btnScanBle.isVisible = true
+            binding.qrTv.text = macAdress
+            activity.macAdress = macAdress
+            activity.startBleScan()
         } else {
-            binding.btnScanBle.visibility = View.INVISIBLE
             binding.qrTv.text = getString(R.string.no_qr_code_found)
         }
     }
@@ -92,11 +93,7 @@ class ConnectionFragment : Fragment() {
 
         binding.lifecycleOwner = this
 
-        val activity = activity as MainActivity
-
-        binding.btnScanBle.setOnClickListener {
-            activity.startBleScan()
-        }
+        activity = requireActivity() as MainActivity
 
         binding.btnQr.setOnClickListener { startCamera(it) }
 
