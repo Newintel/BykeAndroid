@@ -23,9 +23,6 @@ class HomePageFragment : Fragment() {
         val activity = activity as MainActivity
 
         binding.scan.text = "Start scanning"
-        binding.scan.setOnClickListener {
-            activity.startBleScan()
-        }
 
         return binding.root
     }

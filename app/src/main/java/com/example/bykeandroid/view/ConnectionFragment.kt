@@ -1,6 +1,7 @@
 package com.example.bykeandroid.view
 
 import android.app.Activity
+import android.bluetooth.BluetoothAdapter
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
@@ -10,11 +11,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.util.valueIterator
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import com.example.bykeandroid.R
+import com.example.bykeandroid.ble.BleService
 import com.example.bykeandroid.databinding.FragmentConnectionBinding
 import com.google.android.gms.vision.Frame
 import com.google.android.gms.vision.barcode.Barcode
@@ -24,6 +25,8 @@ class ConnectionFragment : Fragment() {
     private lateinit var detector: BarcodeDetector
     private lateinit var binding: FragmentConnectionBinding
     private lateinit var activity : MainActivity
+    private lateinit var bleService: BleService
+
 
     companion object {
         private const val REQUEST_IMAGE_CAPTURE = 1
@@ -78,8 +81,8 @@ class ConnectionFragment : Fragment() {
 
         if (macAdress != null) {
             binding.qrTv.text = macAdress
-            activity.macAdress = macAdress
-            activity.startBleScan()
+            bleService.setDeviceMac(macAdress)
+            startBleScan()
         } else {
             binding.qrTv.text = getString(R.string.no_qr_code_found)
         }
@@ -94,10 +97,41 @@ class ConnectionFragment : Fragment() {
         binding.lifecycleOwner = this
 
         activity = requireActivity() as MainActivity
+        bleService = BleService(activity)
 
         binding.btnQr.setOnClickListener { startCamera(it) }
 
         // Inflate the layout for this fragment
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (bleService.isBluetoothEnabled() == false) {
+            promptEnableBluetooth()
+        }
+    }
+
+    // ------------------------------- BLUETOOTH -------------------------------
+
+    private fun promptEnableBluetooth() {
+        if (bleService.isBluetoothEnabled() == false) {
+            val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+            btIntentEnable.launch(enableBtIntent)
+        }
+    }
+
+    val btIntentEnable = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode != Activity.RESULT_OK) {
+            promptEnableBluetooth()
+        }
+    }
+
+    fun startBleScan() {
+        if (activity.hasRequiredRuntimePermissions() == false) {
+            activity.requestRelevantRuntimePermissions()
+        } else {
+            bleService.startBleScan()
+        }
     }
 }
