@@ -18,7 +18,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 @SuppressLint("MissingPermission")
-class BleService(private val activity: MainActivity) {
+class BleService(private val activity: MainActivity, private var onDeviceFound : (() -> Unit)? = null) {
     private var deviceMac : String? = null
     lateinit var bluetoothGatt : BluetoothGatt
     lateinit var comCharacteristic: BluetoothGattCharacteristic
@@ -36,11 +36,9 @@ class BleService(private val activity: MainActivity) {
 
     private val scanCallback = object : ScanCallback() {
         override fun onScanResult(callbackType: Int, result: ScanResult) {
-            with(result.device) {
-                Log.i("ScanCallback", "Found BLE device! Name: ${name ?: "Unnamed"}, address: $address")
-            }
             if (deviceMac == result.device.address) {
                 Log.i("ScanCallback", "Found your device!");
+                onDeviceFound?.invoke()
                 deviceMac = result.device.address
                 bleScanner.stopScan(this)
                 result.device.connectGatt(activity, false, gattCallback)
@@ -70,7 +68,6 @@ class BleService(private val activity: MainActivity) {
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 if (newState == BluetoothProfile.STATE_CONNECTED) {
                     Log.w("BluetoothGattCallback", "Successfully connected to $deviceAddress")
-                    // TODO: Store a reference to BluetoothGatt
                     bluetoothGatt = gatt
                     Handler(Looper.getMainLooper()).post {
                         bluetoothGatt.discoverServices()
@@ -92,7 +89,6 @@ class BleService(private val activity: MainActivity) {
             if (char != null) {
                 comCharacteristic = char
             }
-            read()
         }
 
         fun onRead(value: ByteArray) {
@@ -164,7 +160,7 @@ class BleService(private val activity: MainActivity) {
 
     fun write(command : Commands, info : Coordinates? = null) {
         if (command.has_info() && info == null) {
-            throw Exception("Command has info but no info was provided")
+            throw Exception("Command should have info but no info was provided")
         }
         val infoString = info?.let { Json.encodeToString(it) }.orEmpty()
         val infoData = infoString.toByteArray()

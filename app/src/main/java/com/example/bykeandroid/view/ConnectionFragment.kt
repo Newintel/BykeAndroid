@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.util.SparseArray
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -27,15 +28,39 @@ class ConnectionFragment : Fragment() {
     private lateinit var activity : MainActivity
     private lateinit var bleService: BleService
 
-
-    companion object {
-        private const val REQUEST_IMAGE_CAPTURE = 1
-    }
-
+    // ------------------------------- Lifecycle --------------------------------
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         buildQrDetector()
     }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_connection, container, false)
+
+        binding.lifecycleOwner = this
+
+        activity = requireActivity() as MainActivity
+        bleService = BleService(activity) {
+            Log.i("BLE", "Device found")
+        }
+
+        binding.btnQr.setOnClickListener { startCamera() }
+
+        // Inflate the layout for this fragment
+        return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (bleService.isBluetoothEnabled() == false) {
+            promptEnableBluetooth()
+        }
+    }
+
+    // ------------------------------- QR Code --------------------------------
 
     private fun buildQrDetector() {
         detector = BarcodeDetector.Builder(requireContext())
@@ -43,23 +68,29 @@ class ConnectionFragment : Fragment() {
             .build()
     }
 
-    fun startCamera(v: View) {
+    private fun startCamera() {
         dispatchTakePictureIntent()
     }
 
     private fun dispatchTakePictureIntent() {
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
             takePictureIntent.resolveActivity(requireContext().packageManager)?.also {
-                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+                resultLauncher.launch(takePictureIntent)
             }
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            val imageBitmap = data?.extras?.get("data") as Bitmap
+    var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            // On laisse la version dépréciée en cas d'utilisation d'une version d'android inférieure à 33
+            val imageBitmap = result.data?.extras?.get("data") as Bitmap
             detectQrCode(imageBitmap)
         }
+    }
+
+    private fun isMacAddressValid(macAddress: String): Boolean {
+        val regex = Regex("([0-9A-Fa-f]{2}[:]){5}([0-9A-Fa-f]{2})")
+        return regex.matches(macAddress)
     }
 
     private fun detectQrCode(image: Bitmap) {
@@ -72,43 +103,17 @@ class ConnectionFragment : Fragment() {
         var macAdress : String? = null
         barcodes.valueIterator().forEach { barcode ->
             val rawValue = barcode.rawValue
-            if (rawValue.length == 17 && rawValue.count() {
-                    it == ':'
-                } == 5) {
+            if (isMacAddressValid(rawValue)) {
                 macAdress = rawValue
             }
         }
 
         if (macAdress != null) {
-            binding.qrTv.text = macAdress
+            binding.qrTv.text = getString(R.string.ble_scan_start)
             bleService.setDeviceMac(macAdress)
             startBleScan()
         } else {
             binding.qrTv.text = getString(R.string.no_qr_code_found)
-        }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_connection, container, false)
-
-        binding.lifecycleOwner = this
-
-        activity = requireActivity() as MainActivity
-        bleService = BleService(activity)
-
-        binding.btnQr.setOnClickListener { startCamera(it) }
-
-        // Inflate the layout for this fragment
-        return binding.root
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (bleService.isBluetoothEnabled() == false) {
-            promptEnableBluetooth()
         }
     }
 

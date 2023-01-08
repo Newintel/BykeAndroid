@@ -27,5 +27,6 @@
     <string name="read_qr_code">Lire QR Code</string>
     <string name="scan_ble">Lancer la recherche</string>
     <string name="no_code_found">Pas de QR code trouvé. Veuillez scanner le QR code de votre appareil</string>
-    <string name="no_qr_code_found">Pas de QR Code trouvé. Veuillez vous rapprocher ou prendre une image plus claire</string>
+    <string name="no_qr_code_found">Pas de QR Code trouvé. Veuillez prendre une image plus claire</string>
+    <string name="ble_scan_start">En train de scanner… Si cela dure trop longtemps, veuillez réactiver le BLE sur votre machine</string>
 </resources>
