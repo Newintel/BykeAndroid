@@ -21,8 +21,10 @@ class LoginViewModel : ViewModel() {
         coroutineScope.launch {
             try {
                 val res = ApiServices.loginService.login(User(username = username, password = password))
+                println(res)
                 onResponse(res)
             } catch (e: Exception) {
+                println(e.message)
                 onResponse(null)
             }
         }

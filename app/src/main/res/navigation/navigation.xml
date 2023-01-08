@@ -16,8 +16,8 @@
                 android:defaultValue="" />
         </action>
         <action
-            android:id="@+id/loginToHome"
-            app:destination="@id/homePageFragment" />
+            android:id="@+id/loginToScan"
+            app:destination="@id/qrCodeScannerFragment" />
         <argument
             android:name="message"
             app:argType="string"
@@ -34,8 +34,8 @@
             app:nullable="true"
             android:defaultValue="" />
         <action
-            android:id="@+id/signUpToHome"
-            app:destination="@id/homePageFragment" />
+            android:id="@+id/signUpToScan"
+            app:destination="@id/qrCodeScannerFragment" />
         <action
             android:id="@+id/signUpToLogin"
             app:destination="@id/loginFragment" />
@@ -52,4 +52,12 @@
         tools:layout="@layout/fragment_home_page" />
     <argument
         android:name="message" />
+    <fragment
+        android:id="@+id/qrCodeScannerFragment"
+        android:name="com.example.bykeandroid.view.ConnectionFragment"
+        android:label="QrCodeScannerFragment" >
+        <action
+            android:id="@+id/action_qrCodeScannerFragment_to_homePageFragment"
+            app:destination="@id/homePageFragment" />
+    </fragment>
 </navigation>
