@@ -2,6 +2,7 @@ package com.example.bykeandroid.data
 
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
+import kotlin.reflect.KClass
 
 enum class Commands {
     NONE {
@@ -42,7 +43,6 @@ enum class Commands {
     open fun has_info(): Boolean {
         return false
     }
-
 }
 
 interface Info {}

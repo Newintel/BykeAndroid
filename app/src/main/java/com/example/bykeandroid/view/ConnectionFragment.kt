@@ -17,15 +17,18 @@ import androidx.core.util.valueIterator
 import androidx.databinding.DataBindingUtil
 import com.example.bykeandroid.R
 import com.example.bykeandroid.ble.BleService
+import com.example.bykeandroid.data.Commands
+import com.example.bykeandroid.data.Coordinates
 import com.example.bykeandroid.databinding.FragmentConnectionBinding
 import com.google.android.gms.vision.Frame
 import com.google.android.gms.vision.barcode.Barcode
 import com.google.android.gms.vision.barcode.BarcodeDetector
+import kotlinx.serialization.json.Json
 
 class ConnectionFragment : Fragment() {
     private lateinit var detector: BarcodeDetector
     private lateinit var binding: FragmentConnectionBinding
-    private lateinit var activity : MainActivity
+    private lateinit var activity: MainActivity
     private lateinit var bleService: BleService
 
     // ------------------------------- Lifecycle --------------------------------
@@ -43,9 +46,15 @@ class ConnectionFragment : Fragment() {
         binding.lifecycleOwner = this
 
         activity = requireActivity() as MainActivity
-        bleService = BleService(activity) {
-            Log.i("BLE", "Device found")
-        }
+        bleService = activity.bleService
+            .onDeviceFound {
+                Log.i("BLE", "Device found")
+                binding.qrTv.text = "Device found"
+            }
+            .onDeviceConnected {
+                Log.i("BLE", "Device connected")
+                binding.qrTv.text = "Device connected"
+            }
 
         binding.btnQr.setOnClickListener { startCamera() }
 
@@ -80,13 +89,14 @@ class ConnectionFragment : Fragment() {
         }
     }
 
-    var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            // On laisse la version dépréciée en cas d'utilisation d'une version d'android inférieure à 33
-            val imageBitmap = result.data?.extras?.get("data") as Bitmap
-            detectQrCode(imageBitmap)
+    var resultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                // On laisse la version dépréciée en cas d'utilisation d'une version d'android inférieure à 33
+                val imageBitmap = result.data?.extras?.get("data") as Bitmap
+                detectQrCode(imageBitmap)
+            }
         }
-    }
 
     private fun isMacAddressValid(macAddress: String): Boolean {
         val regex = Regex("([0-9A-Fa-f]{2}[:]){5}([0-9A-Fa-f]{2})")
@@ -94,13 +104,13 @@ class ConnectionFragment : Fragment() {
     }
 
     private fun detectQrCode(image: Bitmap) {
-        if(detector.isOperational == false) {
+        if (detector.isOperational == false) {
             binding.qrTv.text = "Could not set up the detector!"
             return
         }
         val frame: Frame = Frame.Builder().setBitmap(image).build()
         val barcodes: SparseArray<Barcode> = detector.detect(frame)
-        var macAdress : String? = null
+        var macAdress: String? = null
         barcodes.valueIterator().forEach { barcode ->
             val rawValue = barcode.rawValue
             if (isMacAddressValid(rawValue)) {
@@ -126,11 +136,12 @@ class ConnectionFragment : Fragment() {
         }
     }
 
-    val btIntentEnable = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode != Activity.RESULT_OK) {
-            promptEnableBluetooth()
+    val btIntentEnable =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode != Activity.RESULT_OK) {
+                promptEnableBluetooth()
+            }
         }
-    }
 
     fun startBleScan() {
         if (activity.hasRequiredRuntimePermissions() == false) {

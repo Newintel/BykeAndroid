@@ -16,14 +16,21 @@ import com.example.bykeandroid.data.parseCommand
 import com.example.bykeandroid.view.MainActivity
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import java.util.*
 
 @SuppressLint("MissingPermission")
-class BleService(private val activity: MainActivity, private var onDeviceFound : (() -> Unit)? = null) {
+class BleService(
+    private val activity: MainActivity
+) {
     private var deviceMac : String? = null
-    lateinit var bluetoothGatt : BluetoothGatt
-    lateinit var comCharacteristic: BluetoothGattCharacteristic
-    var dataToSend: Array<ByteArray> = arrayOf()
-    var readData: ByteArray = byteArrayOf()
+    private lateinit var bluetoothGatt : BluetoothGatt
+    private lateinit var comCharacteristic: BluetoothGattCharacteristic
+    private var dataToSend: Array<ByteArray> = arrayOf()
+    private var readData: ByteArray = byteArrayOf()
+    private var commandsCallback: EnumMap<Commands, (String?) -> Unit> = EnumMap(Commands::class.java)
+    private var onDeviceFound : (() -> Unit)? = null
+    private var onDeviceConnected : (() -> Unit)? = null
+    var isConnected: Boolean = false
 
     private val bluetoothAdapter: BluetoothAdapter by lazy {
         val bluetoothManager = activity.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
@@ -37,8 +44,8 @@ class BleService(private val activity: MainActivity, private var onDeviceFound :
     private val scanCallback = object : ScanCallback() {
         override fun onScanResult(callbackType: Int, result: ScanResult) {
             if (deviceMac == result.device.address) {
-                Log.i("ScanCallback", "Found your device!");
-                onDeviceFound?.invoke()
+                Log.i("ScanCallback", "Found your device!")
+                activity.runOnUiThread(onDeviceFound)
                 deviceMac = result.device.address
                 bleScanner.stopScan(this)
                 result.device.connectGatt(activity, false, gattCallback)
@@ -68,6 +75,7 @@ class BleService(private val activity: MainActivity, private var onDeviceFound :
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 if (newState == BluetoothProfile.STATE_CONNECTED) {
                     Log.w("BluetoothGattCallback", "Successfully connected to $deviceAddress")
+                    isConnected = true
                     bluetoothGatt = gatt
                     Handler(Looper.getMainLooper()).post {
                         bluetoothGatt.discoverServices()
@@ -89,6 +97,7 @@ class BleService(private val activity: MainActivity, private var onDeviceFound :
             if (char != null) {
                 comCharacteristic = char
             }
+            activity.runOnUiThread(onDeviceConnected)
         }
 
         fun onRead(value: ByteArray) {
@@ -113,10 +122,8 @@ class BleService(private val activity: MainActivity, private var onDeviceFound :
             }
 
             readData = byteArrayOf()
-            when (command) {
-                else -> {
-                    Log.i("BLE read", "$command")
-                }
+            activity.runOnUiThread {
+                commandsCallback[command]?.invoke(info)
             }
         }
 
@@ -153,6 +160,24 @@ class BleService(private val activity: MainActivity, private var onDeviceFound :
         }
     }
 
+    private fun ble_write(data : ByteArray) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            bluetoothGatt.writeCharacteristic(comCharacteristic, data, BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
+        } else {
+            Log.i("write", "Must use deprecated write (API < 33)")
+            comCharacteristic.value = data
+            comCharacteristic.writeType = BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT
+            bluetoothGatt.writeCharacteristic(comCharacteristic)
+        }
+    }
+
+    private val scanSettings = ScanSettings.Builder()
+        .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
+        .build()
+
+
+    // -------------------------------- BLE Utils --------------------------------
+
     fun read() {
         Log.i("read", "Reading")
         bluetoothGatt.readCharacteristic(comCharacteristic)
@@ -177,22 +202,6 @@ class BleService(private val activity: MainActivity, private var onDeviceFound :
         }
     }
 
-    private fun ble_write(data : ByteArray) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            bluetoothGatt.writeCharacteristic(comCharacteristic, data, BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
-        } else {
-            Log.i("write", "Must use deprecated write (API < 33)")
-            comCharacteristic.value = data
-            comCharacteristic.writeType = BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT
-            bluetoothGatt.writeCharacteristic(comCharacteristic)
-        }
-    }
-
-    private val scanSettings = ScanSettings.Builder()
-        .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
-        .build()
-
-
     // -------------------------------- Utils --------------------------------
     fun startBleScan() {
         bleScanner.startScan(null, scanSettings, scanCallback)
@@ -204,5 +213,20 @@ class BleService(private val activity: MainActivity, private var onDeviceFound :
 
     fun setDeviceMac(mac : String?) {
         deviceMac = mac
+    }
+
+    fun onCommand(command : Commands, callback : (info : String?) -> Unit) : BleService {
+        commandsCallback[command] = callback
+        return this
+    }
+
+    fun onDeviceFound(callback : () -> Unit) : BleService {
+        onDeviceFound = callback
+        return this
+    }
+
+    fun onDeviceConnected(callback : () -> Unit) : BleService {
+        onDeviceConnected = callback
+        return this
     }
 }

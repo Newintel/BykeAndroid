@@ -2,38 +2,26 @@ package com.example.bykeandroid.view
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.bluetooth.*
-import android.bluetooth.le.ScanCallback
-import android.bluetooth.le.ScanResult
-import android.bluetooth.le.ScanSettings
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.bykeandroid.R
 import com.example.bykeandroid.ble.BleService
-import com.example.bykeandroid.data.Commands
-import com.example.bykeandroid.data.Coordinates
-import com.example.bykeandroid.data.parseCommand
 import com.example.bykeandroid.utils.MyDialog
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 
 
 private const val RUNTIME_PERMISSION_REQUEST_CODE = 2
 
 @SuppressLint("MissingPermission")
 class MainActivity : AppCompatActivity() {
+    val bleService = BleService(this)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
