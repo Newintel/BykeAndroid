@@ -137,6 +137,7 @@ class BleService(
         }
 
         // If version is >= 33
+        @Deprecated("Deprecated in Java")
         override fun onCharacteristicRead(
             gatt: BluetoothGatt?,
             characteristic: BluetoothGattCharacteristic?,

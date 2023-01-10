@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.util.valueIterator
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import com.example.bykeandroid.R
 import com.example.bykeandroid.ble.BleService
@@ -46,6 +47,8 @@ class ConnectionFragment : Fragment() {
         binding.lifecycleOwner = this
 
         activity = requireActivity() as MainActivity
+        activity.bottomNavigationView.isVisible = true
+        
         bleService = activity.bleService
             .onDeviceFound {
                 Log.i("BLE", "Device found")

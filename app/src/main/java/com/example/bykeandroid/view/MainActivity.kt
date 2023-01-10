@@ -7,13 +7,16 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.navigation.findNavController
 import com.example.bykeandroid.R
 import com.example.bykeandroid.ble.BleService
 import com.example.bykeandroid.utils.MyDialog
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 private const val RUNTIME_PERMISSION_REQUEST_CODE = 2
@@ -21,10 +24,27 @@ private const val RUNTIME_PERMISSION_REQUEST_CODE = 2
 @SuppressLint("MissingPermission")
 class MainActivity : AppCompatActivity() {
     val bleService = BleService(this)
+    lateinit var bottomNavigationView: BottomNavigationView
+    var currentId : Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        bottomNavigationView = findViewById(R.id.bottom_nav)
+        bottomNavigationView.setOnItemSelectedListener { item: MenuItem ->
+            when (item.itemId) {
+                R.id.bottom_home -> {
+                    findNavController(R.id.nav_host_fragment).navigate(R.id.homePageFragment)
+                    true
+                }
+                R.id.bottom_ble -> {
+                    findNavController(R.id.nav_host_fragment).navigate(R.id.connectionFragment)
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     //  ------------------------------- Permissions --------------------------------
@@ -41,6 +61,7 @@ class MainActivity : AppCompatActivity() {
             }, {}).show(supportFragmentManager, "MyDialog")
         }
     }
+
     @RequiresApi(Build.VERSION_CODES.S)
     private fun requestBluetoothPermissions() {
         runOnUiThread {
@@ -59,7 +80,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun requestRelevantRuntimePermissions() {
-        if (hasRequiredRuntimePermissions()) { return }
+        if (hasRequiredRuntimePermissions()) {
+            return
+        }
         when {
             Build.VERSION.SDK_INT < Build.VERSION_CODES.S -> {
                 requestLocationPermission()
