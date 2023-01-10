@@ -7,38 +7,38 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.bykeandroid.view.LoginFragment"
-        android:label="LoginFragment" >
+        android:label="LoginFragment">
         <action
             android:id="@+id/loginToSignUp"
-            app:destination="@id/signUp" >
+            app:destination="@id/signUp">
             <argument
                 android:name="username"
                 android:defaultValue="" />
         </action>
-        <action
-            android:id="@+id/loginToScan"
-            app:destination="@id/qrCodeScannerFragment" />
         <argument
             android:name="message"
             app:argType="string"
             app:nullable="true"
-            android:defaultValue=""/>
+            android:defaultValue="" />
+        <action
+            android:id="@+id/loginToHome"
+            app:destination="@id/homePageFragment" />
     </fragment>
     <fragment
         android:id="@+id/signUp"
         android:name="com.example.bykeandroid.view.SignUpFragment"
-        android:label="SignUp" >
+        android:label="SignUp">
         <argument
             android:name="username"
             app:argType="string"
             app:nullable="true"
             android:defaultValue="" />
         <action
-            android:id="@+id/signUpToScan"
-            app:destination="@id/qrCodeScannerFragment" />
-        <action
             android:id="@+id/signUpToLogin"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/signUpToHome"
+            app:destination="@id/homePageFragment" />
     </fragment>
     <activity
         android:id="@+id/splashScreenActivity"
@@ -50,14 +50,9 @@
         android:name="com.example.bykeandroid.view.HomePageFragment"
         android:label="fragment_home_page"
         tools:layout="@layout/fragment_home_page" />
-    <argument
-        android:name="message" />
+    <argument android:name="message" />
     <fragment
-        android:id="@+id/qrCodeScannerFragment"
+        android:id="@+id/connectionFragment"
         android:name="com.example.bykeandroid.view.ConnectionFragment"
-        android:label="QrCodeScannerFragment" >
-        <action
-            android:id="@+id/action_qrCodeScannerFragment_to_homePageFragment"
-            app:destination="@id/homePageFragment" />
-    </fragment>
+        android:label="ConnectionFragment" />
 </navigation>
