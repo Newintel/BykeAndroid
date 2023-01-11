@@ -55,4 +55,9 @@
         android:id="@+id/connectionFragment"
         android:name="com.example.bykeandroid.view.ConnectionFragment"
         android:label="ConnectionFragment" />
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.example.bykeandroid.view.MapFragment"
+        android:label="fragment_map"
+        tools:layout="@layout/fragment_map" />
 </navigation>

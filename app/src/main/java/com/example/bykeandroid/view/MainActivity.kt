@@ -25,7 +25,6 @@ private const val RUNTIME_PERMISSION_REQUEST_CODE = 2
 class MainActivity : AppCompatActivity() {
     val bleService = BleService(this)
     lateinit var bottomNavigationView: BottomNavigationView
-    var currentId : Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +39,10 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.bottom_ble -> {
                     findNavController(R.id.nav_host_fragment).navigate(R.id.connectionFragment)
+                    true
+                }
+                R.id.bottom_map -> {
+                    findNavController(R.id.nav_host_fragment).navigate(R.id.mapFragment)
                     true
                 }
                 else -> false
