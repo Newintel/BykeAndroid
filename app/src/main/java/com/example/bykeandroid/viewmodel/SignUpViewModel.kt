@@ -1,11 +1,7 @@
 package com.example.bykeandroid.viewmodel
 
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.bykeandroid.api.ApiServices
-import com.example.bykeandroid.api.LoginResponse
 import com.example.bykeandroid.api.RegisterResponse
 import com.example.bykeandroid.data.User
 import kotlinx.coroutines.CoroutineScope
@@ -19,7 +15,11 @@ class SignUpViewModel : ViewModel() {
 
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
-    fun sign_in(username : String, password: String, onResponse: (Response<RegisterResponse>?) -> Unit) {
+    fun signIn(
+        username: String,
+        password: String,
+        onResponse: (Response<RegisterResponse>?) -> Unit
+    ) {
         val user = User(username = username, password = password)
         coroutineScope.launch {
             try {

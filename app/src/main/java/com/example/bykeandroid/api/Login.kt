@@ -7,6 +7,7 @@ import retrofit2.http.POST;
 
 class LoginResponse {
     val token: String? = null
+    val id: Int? = null
 }
 
 class RegisterResponse {
