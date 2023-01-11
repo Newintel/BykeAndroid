@@ -13,6 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.bykeandroid.R
+import com.example.bykeandroid.api.ApiServices
 import com.example.bykeandroid.databinding.FragmentSignUpBinding
 import com.example.bykeandroid.viewmodel.LoginViewModel
 import com.example.bykeandroid.viewmodel.SignUpViewModel
@@ -67,10 +68,10 @@ class SignUpFragment : Fragment() {
             }
 
             if (canLogIn) {
-                viewModel.sign_in(binding.etUsername.text.toString(), binding.etPwd.text.toString()) { res ->
+                viewModel.signIn(binding.etUsername.text.toString(), binding.etPwd.text.toString()) { res ->
                     if (res == null) {
                         Toast.makeText(context, R.string.connection_failed, Toast.LENGTH_LONG).show()
-                        return@sign_in
+                        return@signIn
                     }
                     if (res.isSuccessful) {
                         loginViewModel.connect(binding.etUsername.text.toString(), binding.etPwd.text.toString()) { res2 ->

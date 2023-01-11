@@ -20,9 +20,7 @@ class LoginViewModel : ViewModel() {
     fun connect(username : String, password: String, onResponse: (Response<LoginResponse>?) -> Unit) {
         coroutineScope.launch {
             try {
-                val res = ApiServices.loginService.login(User(username = username, password = password))
-                println(res)
-                onResponse(res)
+                onResponse(ApiServices.login(username, password))
             } catch (e: Exception) {
                 println(e.message)
                 onResponse(null)
