@@ -60,4 +60,12 @@
         android:name="com.example.bykeandroid.view.MapFragment"
         android:label="fragment_map"
         tools:layout="@layout/fragment_map" />
+    <fragment
+        android:id="@+id/accountFragment"
+        android:name="com.example.bykeandroid.view.AccountFragment"
+        android:label="AccountFragment">
+        <action
+            android:id="@+id/actionToLogin"
+            app:destination="@id/loginFragment" />
+    </fragment>
 </navigation>

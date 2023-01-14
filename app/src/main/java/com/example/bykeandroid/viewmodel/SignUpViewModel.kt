@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.example.bykeandroid.api.ApiServices
 import com.example.bykeandroid.api.RegisterResponse
 import com.example.bykeandroid.data.User
+import com.google.android.material.datepicker.MaterialDatePicker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -15,12 +16,14 @@ class SignUpViewModel : ViewModel() {
 
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
+    val datePicker = MaterialDatePicker.Builder.datePicker()
+        .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+        .build()
+
     fun signIn(
-        username: String,
-        password: String,
+        user : User,
         onResponse: (Response<RegisterResponse>?) -> Unit
     ) {
-        val user = User(username = username, password = password)
         coroutineScope.launch {
             try {
                 val res = ApiServices.loginService.register(user)

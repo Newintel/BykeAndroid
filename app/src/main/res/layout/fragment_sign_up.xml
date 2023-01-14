@@ -3,13 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.bykeandroid.view.MainActivity">
-
-    <data>
-        <variable
-            name="viewModel"
-            type="com.example.bykeandroid.viewmodel.SignUpViewModel" />
-    </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -127,7 +120,6 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_username" />
 
 
-
         <EditText
             android:id="@+id/et_lastname"
             android:layout_width="0dp"
@@ -161,7 +153,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_firstname" />
 
-        <EditText
+        <TextView
             android:id="@+id/et_birthday"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -172,7 +164,6 @@
             android:ems="10"
             android:hint="@string/input_birthday_hint"
             android:importantForAutofill="no"
-            android:inputType="date"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"

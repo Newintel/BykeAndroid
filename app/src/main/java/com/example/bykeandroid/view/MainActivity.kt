@@ -8,7 +8,6 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -32,6 +31,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         bottomNavigationView = findViewById(R.id.bottom_nav)
+
         bottomNavigationView.setOnItemSelectedListener { item: MenuItem ->
             when (item.itemId) {
                 R.id.bottom_home -> {
@@ -44,6 +44,10 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.bottom_map -> {
                     findNavController(R.id.nav_host_fragment).navigate(R.id.mapFragment)
+                    true
+                }
+                R.id.bottom_account -> {
+                    findNavController(R.id.nav_host_fragment).navigate(R.id.accountFragment)
                     true
                 }
                 else -> false

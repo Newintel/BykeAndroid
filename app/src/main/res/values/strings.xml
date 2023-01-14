@@ -4,12 +4,12 @@
     <string name="user_name">Username</string>
     <string name="last_name">Last Name</string>
     <string name="first_name">First Name</string>
-    <string name="birthday">Birthday</string>
+    <string name="birthday">Date of birth</string>
     <string name="password">Password</string>
     <string name="input_username_hint">Enter your Username</string>
     <string name="input_lastname_hint">Enter your Last Name</string>
     <string name="input_firstname_hint">Enter your First Name</string>
-    <string name="input_birthday_hint">Enter your Birthday</string>
+    <string name="input_birthday_hint">Enter your Birthdate</string>
     <string name="login">Login</string>
     <string name="input_password_hint">Enter your password</string>
     <string name="no_account_sign_up">No account? Sign Up!</string>
@@ -30,4 +30,10 @@
     <string name="no_code_found">No QrCode found. Please scan the QRCode on your device</string>
     <string name="no_qr_code_found">"No QR code found. Please take a clearer picture"</string>
     <string name="ble_scan_start">Scanning… If it takes too long please reactivate BLE on the device</string>
+    <string name="log_out">Log out</string>
+    <string name="invalid_date">Please enter a valid date</string>
+    <string name="invalid_birthdate">Invalid birth date</string>
+    <string name="no_rides">No rides yet</string>
+    <string name="about_me">About me</string>
+    <string name="last_rides">Last 5 rides</string>
 </resources>

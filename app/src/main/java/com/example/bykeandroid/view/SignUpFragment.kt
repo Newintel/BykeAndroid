@@ -14,9 +14,15 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.bykeandroid.R
+import com.example.bykeandroid.data.User
 import com.example.bykeandroid.databinding.FragmentSignUpBinding
 import com.example.bykeandroid.viewmodel.LoginViewModel
 import com.example.bykeandroid.viewmodel.SignUpViewModel
+import java.text.DateFormat
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.util.Date
 
 
 class SignUpFragment : Fragment() {
@@ -32,7 +38,6 @@ class SignUpFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_sign_up, container, false)
-        binding.viewModel = viewModel
 
         binding.lifecycleOwner = this
 
@@ -58,10 +63,24 @@ class SignUpFragment : Fragment() {
             }
         }
 
+        viewModel.datePicker.addOnPositiveButtonClickListener { date ->
+            val formatter = DateFormat.getDateInstance()
+            binding.etBirthday.text = formatter.format(Date(date))
+        }
+
+        with(binding.etBirthday) {
+            setOnClickListener {
+                viewModel.datePicker.show(childFragmentManager, "DATE_PICKER")
+            }
+        }
+
         binding.btnSignUp.setOnClickListener {
             var canLogIn = true
             val username = binding.etUsername.text.toString()
             val password = binding.etPwd.text.toString()
+            val bdayText = binding.etBirthday.text.toString()
+
+            var birthdate: String? = null
 
             if (username.isEmpty()) {
                 binding.etUsername.error = getString(R.string.username_missing)
@@ -72,16 +91,43 @@ class SignUpFragment : Fragment() {
                 canLogIn = false
             }
 
+            if (bdayText.isNotEmpty()) {
+                viewModel.datePicker.selection?.let {
+                    if (it < System.currentTimeMillis()) {
+                        birthdate = DateTimeFormatter.ISO_LOCAL_DATE.format(
+                            Instant.ofEpochMilli(it).atZone(ZoneId.systemDefault()).toLocalDate()
+                        )
+                    } else {
+                        Toast.makeText(activity, R.string.invalid_birthdate, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+
+
             if (canLogIn) {
-                viewModel.signIn(username, password) { res ->
+                val user = User(
+                    username = username,
+                    password = password,
+                    firstname = binding.etFirstname.text.toString(),
+                    lastname = binding.etLastname.text.toString(),
+                    birthdate = birthdate,
+                )
+
+
+                viewModel.signIn(user) { res ->
                     if (res == null) {
-                        Toast.makeText(context, R.string.connection_failed, Toast.LENGTH_LONG).show()
+                        Toast.makeText(context, R.string.connection_failed, Toast.LENGTH_LONG)
+                            .show()
                         return@signIn
                     }
                     if (res.isSuccessful) {
                         loginViewModel.connect(username, password) { res2 ->
                             if (res2 == null) {
-                                Toast.makeText(context, R.string.connection_failed, Toast.LENGTH_LONG).show()
+                                Toast.makeText(
+                                    context,
+                                    R.string.connection_failed,
+                                    Toast.LENGTH_LONG
+                                ).show()
                                 return@connect
                             }
                             val sharedPrefUser = activity.getPreferences(Context.MODE_PRIVATE)
@@ -92,13 +138,17 @@ class SignUpFragment : Fragment() {
                             }
                             val directions = if (res2.isSuccessful)
                                 SignUpFragmentDirections.signUpToHome()
-                                else SignUpFragmentDirections.signUpToLogin(getString(R.string.login_fail_try_again))
+                            else SignUpFragmentDirections.signUpToLogin(getString(R.string.login_fail_try_again))
                             directions.also {
                                 findNavController().navigate(it)
                             }
                         }
                     } else {
-                        Toast.makeText(context, getString(R.string.sign_up_fail_try_again), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            context,
+                            getString(R.string.sign_up_fail_try_again),
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }

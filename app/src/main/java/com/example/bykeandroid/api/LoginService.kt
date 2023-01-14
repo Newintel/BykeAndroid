@@ -3,18 +3,18 @@ package com.example.bykeandroid.api
 import com.example.bykeandroid.data.User
 import retrofit2.Response
 import retrofit2.http.Body
-import retrofit2.http.POST;
+import retrofit2.http.GET
+import retrofit2.http.POST
 
 class LoginResponse {
     val token: String? = null
-    val id: Int? = null
 }
 
 class RegisterResponse {
     val id: String? = null
 }
 
-interface Login {
+interface LoginService {
     @POST("login")
     suspend fun login(
         @Body user: User
@@ -24,4 +24,7 @@ interface Login {
     suspend fun register(
         @Body user: User
     ): Response<RegisterResponse>
+
+    @GET("login/user")
+    suspend fun getUser(): Response<User>
 }
