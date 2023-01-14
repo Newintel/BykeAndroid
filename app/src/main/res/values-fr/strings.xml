@@ -35,4 +35,7 @@
     <string name="no_rides">Pas d\'excursions</string>
     <string name="about_me">À propos de moi</string>
     <string name="last_rides">5 dernières excursions</string>
+    <string name="date">"Date: "</string>
+    <string name="created_by">"Créée par: "</string>
+    <string name="duration">"Durée: "</string>
 </resources>

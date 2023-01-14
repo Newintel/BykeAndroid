@@ -5,12 +5,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ListAdapter
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.bykeandroid.R
+import com.example.bykeandroid.data.CustomListAdapter
+import com.example.bykeandroid.data.ExcursionListAdapter
 import com.example.bykeandroid.databinding.FragmentAccountBinding
 import com.example.bykeandroid.viewmodel.UserViewModel
 import kotlinx.datetime.*
@@ -31,6 +34,8 @@ class AccountFragment : Fragment() {
         binding.lifecycleOwner = this
 
         val activity = activity as MainActivity
+        val listView = binding.ridesList
+
         with(activity.bottomNavigationView) {
             isVisible = true
         }
@@ -65,13 +70,14 @@ class AccountFragment : Fragment() {
                         }
                         "${i++}- ${e.path?.name} (${departureDate.toString()} - $time)\n"
                     }
-                if (excursions.isNotEmpty()) {
-                    binding.ridesTable.text = excursionText
-                }
+//                binding.ridesTable.visibility = View.GONE
+                val customAdapter = ExcursionListAdapter(activity, excursions)
+                listView.adapter = customAdapter
+                listView.visibility = View.VISIBLE
             }
         }
 
-        binding.ridesTable.text = getString(R.string.no_rides)
+//        binding.ridesTable.text = getString(R.string.no_rides)
 
         binding.logoutBtn.setOnClickListener {
             userViewModel.logout()

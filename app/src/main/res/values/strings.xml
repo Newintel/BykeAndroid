@@ -36,4 +36,7 @@
     <string name="no_rides">No rides yet</string>
     <string name="about_me">About me</string>
     <string name="last_rides">Last 5 rides</string>
+    <string name="created_by">"Created by: "</string>
+    <string name="date">"Date: "</string>
+    <string name="duration">"Duration: "</string>
 </resources>
