@@ -155,13 +155,13 @@ class BleService(
         ) {
             Log.i("onCharacteristicWrite", "Value: ${characteristic?.value}")
             if (dataToSend.isNotEmpty()) {
-                ble_write(dataToSend[0])
+                bleWrite(dataToSend[0])
                 dataToSend = dataToSend.drop(1).toTypedArray()
             }
         }
     }
 
-    private fun ble_write(data : ByteArray) {
+    private fun bleWrite(data : ByteArray) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             bluetoothGatt.writeCharacteristic(comCharacteristic, data, BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
         } else {
@@ -185,7 +185,7 @@ class BleService(
     }
 
     fun write(command : Commands, info : Coordinates? = null) {
-        if (command.has_info() && info == null) {
+        if (command.hasInfo() && info == null) {
             throw Exception("Command should have info but no info was provided")
         }
         val infoString = info?.let { Json.encodeToString(it) }.orEmpty()
@@ -197,9 +197,9 @@ class BleService(
             for (i in data.indices step 20) {
                 dataToSend += data.sliceArray(i until minOf(i + 20, data.size))
             }
-            ble_write("".toByteArray())
+            bleWrite("".toByteArray())
         } else {
-            ble_write(data)
+            bleWrite(data)
         }
     }
 

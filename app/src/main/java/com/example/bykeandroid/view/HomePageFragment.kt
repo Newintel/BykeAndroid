@@ -9,8 +9,6 @@ import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import com.example.bykeandroid.R
 import com.example.bykeandroid.databinding.FragmentHomePageBinding
-import com.example.bykeandroid.databinding.FragmentLoginBinding
-import com.example.bykeandroid.utils.MyDialog
 
 class HomePageFragment : Fragment() {
     private lateinit var binding: FragmentHomePageBinding
@@ -20,7 +18,7 @@ class HomePageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        binding =  DataBindingUtil.inflate(inflater, R.layout.fragment_home_page, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home_page, container, false)
         val activity = activity as MainActivity
         with(activity.bottomNavigationView) {
             isVisible = true

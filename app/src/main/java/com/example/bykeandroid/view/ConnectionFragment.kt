@@ -18,13 +18,10 @@ import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import com.example.bykeandroid.R
 import com.example.bykeandroid.ble.BleService
-import com.example.bykeandroid.data.Commands
-import com.example.bykeandroid.data.Coordinates
 import com.example.bykeandroid.databinding.FragmentConnectionBinding
 import com.google.android.gms.vision.Frame
 import com.google.android.gms.vision.barcode.Barcode
 import com.google.android.gms.vision.barcode.BarcodeDetector
-import kotlinx.serialization.json.Json
 
 class ConnectionFragment : Fragment() {
     private lateinit var detector: BarcodeDetector
@@ -92,7 +89,7 @@ class ConnectionFragment : Fragment() {
         }
     }
 
-    var resultLauncher =
+    private var resultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 // On laisse la version dépréciée en cas d'utilisation d'une version d'android inférieure à 33
@@ -139,14 +136,14 @@ class ConnectionFragment : Fragment() {
         }
     }
 
-    val btIntentEnable =
+    private val btIntentEnable =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode != Activity.RESULT_OK) {
                 promptEnableBluetooth()
             }
         }
 
-    fun startBleScan() {
+    private fun startBleScan() {
         if (activity.hasRequiredRuntimePermissions() == false) {
             activity.requestRelevantRuntimePermissions()
         } else {

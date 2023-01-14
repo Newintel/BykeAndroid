@@ -22,7 +22,7 @@ object ApiServices {
         loadServices()
     }
 
-    fun loadServices() {
+    private fun loadServices() {
         loginService = retrofit.create(LoginService::class.java)
         excursionService = retrofit.create(ExcursionService::class.java)
     }

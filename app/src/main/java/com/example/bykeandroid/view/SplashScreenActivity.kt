@@ -2,11 +2,7 @@ package com.example.bykeandroid.view
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.bykeandroid.R
 import com.example.bykeandroid.api.ApiServices
 import com.example.bykeandroid.utils.MyDialog

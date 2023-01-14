@@ -1,9 +1,5 @@
 package com.example.bykeandroid.data
 
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.json.Json
-import kotlin.reflect.KClass
-
 enum class Commands {
     NONE {
         override fun getCode(): Byte {
@@ -25,7 +21,7 @@ enum class Commands {
             return 0x02
         }
 
-        override fun has_info(): Boolean {
+        override fun hasInfo(): Boolean {
             return true
         }
      },
@@ -34,18 +30,16 @@ enum class Commands {
             return 0x01
         }
 
-        override fun has_info(): Boolean {
+        override fun hasInfo(): Boolean {
             return true
         }
     };
 
     abstract fun getCode(): Byte
-    open fun has_info(): Boolean {
+    open fun hasInfo(): Boolean {
         return false
     }
 }
-
-interface Info {}
 
 fun parseCommand(bytes : ByteArray): Triple<Commands, Int, String?>? {
     if (bytes.size < 2) {
@@ -63,7 +57,7 @@ fun parseCommand(bytes : ByteArray): Triple<Commands, Int, String?>? {
                 break
             }
         }
-        if (c.has_info()) {
+        if (c.hasInfo()) {
             info = String(bytes.copyOfRange(2, length + 2))
         }
     }
