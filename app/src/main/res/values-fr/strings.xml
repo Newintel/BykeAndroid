@@ -36,6 +36,13 @@
     <string name="about_me">À propos de moi</string>
     <string name="last_rides">5 dernières excursions</string>
     <string name="date">"Date: "</string>
-    <string name="created_by">"Créée par: "</string>
+    <string name="created_by">"Créé par: "</string>
     <string name="duration">"Durée: "</string>
+    <string name="most_used_paths">Itinéraires les plus empruntés</string>
+    <string name="length">"Distance: "</string>
+    <string name="created_by_fem">"Créée par: "</string>
+    <string name="home">Accueil</string>
+    <string name="map">Carte</string>
+    <string name="connection">Connexion</string>
+    <string name="my_account">Mon compte</string>
 </resources>

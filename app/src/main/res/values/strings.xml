@@ -37,6 +37,13 @@
     <string name="about_me">About me</string>
     <string name="last_rides">Last 5 rides</string>
     <string name="created_by">"Created by: "</string>
+    <string name="created_by_fem">"Created by: "</string>
     <string name="date">"Date: "</string>
     <string name="duration">"Duration: "</string>
+    <string name="length">"Distance: "</string>
+    <string name="most_used_paths">Most used paths</string>
+    <string name="home">Home</string>
+    <string name="map">Map</string>
+    <string name="connection">Connection</string>
+    <string name="my_account">My account</string>
 </resources>

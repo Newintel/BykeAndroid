@@ -13,7 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.bykeandroid.R
 import com.example.bykeandroid.data.ExcursionListAdapter
 import com.example.bykeandroid.databinding.FragmentAccountBinding
-import com.example.bykeandroid.viewmodel.UserViewModel
+import com.example.bykeandroid.viewmodel.AccountViewModel
 import kotlinx.datetime.*
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -21,17 +21,23 @@ import java.time.format.FormatStyle
 
 class AccountFragment : Fragment() {
     private lateinit var binding: FragmentAccountBinding
-    private val userViewModel: UserViewModel by viewModels()
+    private val userViewModel: AccountViewModel by viewModels()
+    private lateinit var activity: MainActivity
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        activity = requireActivity() as MainActivity
+
+        if (activity.accountPageView != null) {
+            return activity.accountPageView!!
+        }
+
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_account, container, false)
         binding.lifecycleOwner = this
 
-        val activity = activity as MainActivity
         val listView = binding.ridesList
 
         with(activity.bottomNavigationView) {
@@ -93,6 +99,14 @@ class AccountFragment : Fragment() {
 
         }
 
+        activity.accountPageView = binding.root
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        with(activity.bottomNavigationView) {
+            isVisible = true
+        }
     }
 }

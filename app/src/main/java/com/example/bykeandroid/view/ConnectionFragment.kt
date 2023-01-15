@@ -26,8 +26,8 @@ import com.google.android.gms.vision.barcode.BarcodeDetector
 class ConnectionFragment : Fragment() {
     private lateinit var detector: BarcodeDetector
     private lateinit var binding: FragmentConnectionBinding
+    private var bleService: BleService? = null
     private lateinit var activity: MainActivity
-    private lateinit var bleService: BleService
 
     // ------------------------------- Lifecycle --------------------------------
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,11 +39,15 @@ class ConnectionFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        activity = requireActivity() as MainActivity
+
+        if (activity.connectionPageView != null) {
+            return activity.connectionPageView!!
+        }
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_connection, container, false)
 
         binding.lifecycleOwner = this
 
-        activity = requireActivity() as MainActivity
         activity.bottomNavigationView.isVisible = true
         
         bleService = activity.bleService
@@ -58,13 +62,17 @@ class ConnectionFragment : Fragment() {
 
         binding.btnQr.setOnClickListener { startCamera() }
 
+        activity.connectionPageView = binding.root
         // Inflate the layout for this fragment
         return binding.root
     }
 
     override fun onResume() {
         super.onResume()
-        if (bleService.isBluetoothEnabled() == false) {
+        with(activity.bottomNavigationView) {
+            isVisible = true
+        }
+        if (bleService?.isBluetoothEnabled() == false) {
             promptEnableBluetooth()
         }
     }
@@ -120,7 +128,7 @@ class ConnectionFragment : Fragment() {
 
         if (macAdress != null) {
             binding.qrTv.text = getString(R.string.ble_scan_start)
-            bleService.setDeviceMac(macAdress)
+            bleService!!.setDeviceMac(macAdress)
             startBleScan()
         } else {
             binding.qrTv.text = getString(R.string.no_qr_code_found)
@@ -130,7 +138,7 @@ class ConnectionFragment : Fragment() {
     // ------------------------------- BLUETOOTH -------------------------------
 
     private fun promptEnableBluetooth() {
-        if (bleService.isBluetoothEnabled() == false) {
+        if (bleService?.isBluetoothEnabled() == false) {
             val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
             btIntentEnable.launch(enableBtIntent)
         }
@@ -147,7 +155,7 @@ class ConnectionFragment : Fragment() {
         if (activity.hasRequiredRuntimePermissions() == false) {
             activity.requestRelevantRuntimePermissions()
         } else {
-            bleService.startBleScan()
+            bleService!!.startBleScan()
         }
     }
 }

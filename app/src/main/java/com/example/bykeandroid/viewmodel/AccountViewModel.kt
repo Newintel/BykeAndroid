@@ -9,7 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class UserViewModel : ViewModel() {
+class AccountViewModel : ViewModel() {
     private var viewModelJob = Job()
     var user: User? = null
 

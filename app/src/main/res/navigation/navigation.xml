@@ -49,7 +49,11 @@
         android:id="@+id/homePageFragment"
         android:name="com.example.bykeandroid.view.HomePageFragment"
         android:label="fragment_home_page"
-        tools:layout="@layout/fragment_home_page" />
+        tools:layout="@layout/fragment_home_page">
+        <action
+            android:id="@+id/homeToMap"
+            app:destination="@id/mapFragment" />
+    </fragment>
     <argument android:name="message" />
     <fragment
         android:id="@+id/connectionFragment"
@@ -59,7 +63,18 @@
         android:id="@+id/mapFragment"
         android:name="com.example.bykeandroid.view.MapFragment"
         android:label="fragment_map"
-        tools:layout="@layout/fragment_map" />
+        tools:layout="@layout/fragment_map">
+        <argument
+            android:name="steps"
+            app:argType="com.example.bykeandroid.data.PathStep[]"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <argument
+            android:name="polylines"
+            app:argType="string[]"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
     <fragment
         android:id="@+id/accountFragment"
         android:name="com.example.bykeandroid.view.AccountFragment"

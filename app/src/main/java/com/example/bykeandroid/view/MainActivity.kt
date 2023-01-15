@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -26,10 +27,14 @@ class MainActivity : AppCompatActivity() {
     val bleService = BleService(this)
     lateinit var bottomNavigationView: BottomNavigationView
 
+    var homePageView: View? = null
+    var accountPageView: View? = null
+    var connectionPageView: View? = null
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         bottomNavigationView = findViewById(R.id.bottom_nav)
 
         bottomNavigationView.setOnItemSelectedListener { item: MenuItem ->
@@ -42,15 +47,25 @@ class MainActivity : AppCompatActivity() {
                     findNavController(R.id.nav_host_fragment).navigate(R.id.connectionFragment)
                     true
                 }
-                R.id.bottom_map -> {
-                    findNavController(R.id.nav_host_fragment).navigate(R.id.mapFragment)
-                    true
-                }
                 R.id.bottom_account -> {
                     findNavController(R.id.nav_host_fragment).navigate(R.id.accountFragment)
                     true
                 }
                 else -> false
+            }
+        }
+
+        bottomNavigationView.setOnItemReselectedListener {
+            when (it.itemId) {
+                R.id.bottom_home -> {
+                    homePageView = null
+                }
+                R.id.bottom_ble -> {
+                    connectionPageView = null
+                }
+                R.id.bottom_account -> {
+                    accountPageView = null
+                }
             }
         }
     }
