@@ -46,4 +46,9 @@
     <string name="map">Map</string>
     <string name="connection">Connection</string>
     <string name="my_account">My account</string>
+    <string name="new_step">New Step</string>
+    <string name="device_found">Device found</string>
+    <string name="device_connected">Device connected</string>
+    <string name="device_registered">A device was registered:</string>
+    <string name="read_qr_warn">Warning: If you read the QR code, your last device will be erased from memory</string>
 </resources>

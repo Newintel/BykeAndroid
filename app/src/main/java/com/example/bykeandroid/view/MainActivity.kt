@@ -15,9 +15,20 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import com.example.bykeandroid.R
+import com.example.bykeandroid.api.ApiServices
+import com.example.bykeandroid.ble.BlePoller
 import com.example.bykeandroid.ble.BleService
+import com.example.bykeandroid.data.Commands
+import com.example.bykeandroid.data.Coordinates
+import com.example.bykeandroid.data.Step
 import com.example.bykeandroid.utils.MyDialog
+import com.example.bykeandroid.viewmodel.AccountViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.serialization.json.Json
 
 
 private const val RUNTIME_PERMISSION_REQUEST_CODE = 2
@@ -26,6 +37,9 @@ private const val RUNTIME_PERMISSION_REQUEST_CODE = 2
 class MainActivity : AppCompatActivity() {
     val bleService = BleService(this)
     lateinit var bottomNavigationView: BottomNavigationView
+    val accountViewModel = AccountViewModel()
+    val blePoller = BlePoller(bleService)
+    var pollingJob : Job? = null
 
     var homePageView: View? = null
     var accountPageView: View? = null
@@ -36,6 +50,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         bottomNavigationView = findViewById(R.id.bottom_nav)
+
+        val job = Job()
+        val coroutineScope = CoroutineScope(job + Dispatchers.Main)
 
         bottomNavigationView.setOnItemSelectedListener { item: MenuItem ->
             when (item.itemId) {
@@ -67,6 +84,31 @@ class MainActivity : AppCompatActivity() {
                     accountPageView = null
                 }
             }
+        }
+
+        accountViewModel.loadUser { user ->
+            run {
+                bleService.onCommand(Commands.NEW_STEP) { info ->
+                    if (info == null) {
+                        return@onCommand
+                    }
+                    val coords = Json.decodeFromString(Coordinates.serializer(), info)
+                    coroutineScope.launch {
+                        ApiServices.stepService.postStep(
+                            Step(
+                                creatorId = user.id,
+                                latitude = coords.latitude,
+                                longitude = coords.longitude,
+                                location = getString(R.string.new_step)
+                            )
+                        )
+                    }
+                }
+            }
+        }
+
+        pollingJob = coroutineScope.launch {
+            blePoller.startRepeatingJob(1000L);
         }
     }
 

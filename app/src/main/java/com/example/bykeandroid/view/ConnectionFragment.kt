@@ -2,6 +2,7 @@ package com.example.bykeandroid.view
 
 import android.app.Activity
 import android.bluetooth.BluetoothAdapter
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
@@ -44,6 +45,7 @@ class ConnectionFragment : Fragment() {
         if (activity.connectionPageView != null) {
             return activity.connectionPageView!!
         }
+
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_connection, container, false)
 
         binding.lifecycleOwner = this
@@ -53,12 +55,19 @@ class ConnectionFragment : Fragment() {
         bleService = activity.bleService
             .onDeviceFound {
                 Log.i("BLE", "Device found")
-                binding.qrTv.text = "Device found"
+                binding.qrTv.text = getString(R.string.device_found)
             }
             .onDeviceConnected {
                 Log.i("BLE", "Device connected")
-                binding.qrTv.text = "Device connected"
+                binding.qrTv.text = getString(R.string.device_connected)
             }
+
+        val macAddress = activity.getPreferences(Context.MODE_PRIVATE).getString("macAddress", null)
+        if (macAddress != null) {
+            bleService?.setDeviceMac(macAddress)
+            bleService?.startBleScan()
+            binding.qrTv.text = "${getString(R.string.device_registered)} $macAddress"
+        }
 
         binding.btnQr.setOnClickListener { startCamera() }
 
@@ -128,6 +137,7 @@ class ConnectionFragment : Fragment() {
 
         if (macAdress != null) {
             binding.qrTv.text = getString(R.string.ble_scan_start)
+            activity.getPreferences(Context.MODE_PRIVATE).edit().putString("macAddress", macAdress).apply()
             bleService!!.setDeviceMac(macAdress)
             startBleScan()
         } else {

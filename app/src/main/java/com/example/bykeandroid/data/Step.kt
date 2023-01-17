@@ -10,4 +10,5 @@ class Step(
     val location: String? = null,
     val latitude: Double? = null,
     val longitude: Double? = null,
+    val creatorId : Int? = null,
 ) : Parcelable

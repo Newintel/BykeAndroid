@@ -16,6 +16,10 @@ class AccountViewModel : ViewModel() {
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
     fun loadUser(onSuccess: (User) -> Unit) {
+        if (user != null) {
+            onSuccess(user!!)
+            return
+        }
         coroutineScope.launch {
             try {
                 val res = ApiServices.loginService.getUser()

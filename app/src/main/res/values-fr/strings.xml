@@ -45,4 +45,9 @@
     <string name="map">Carte</string>
     <string name="connection">Connexion</string>
     <string name="my_account">Mon compte</string>
+    <string name="new_step">Nouvelle étape</string>
+    <string name="device_found">Un système a été trouvé!</string>
+    <string name="device_connected">Système connecté</string>
+    <string name="device_registered">Un système a été enregistré:</string>
+    <string name="read_qr_warn">Attention: Si vous lisez le QR code, votre dernier système sera effacé de la mémoire</string>
 </resources>

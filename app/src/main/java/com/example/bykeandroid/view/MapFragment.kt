@@ -30,13 +30,14 @@ class MapFragment : Fragment() {
                         .title("${it.id!!.position} - ${it.step.location}")
                 )
             }
-            val firstStep = steps.find { it.id!!.position == 1 }!!
-            googleMap.moveCamera(
-                CameraUpdateFactory.newLatLngZoom(
-                    LatLng(firstStep.step!!.latitude!!, firstStep.step.longitude!!),
-                    10f
+            steps.find { it.id!!.position == 1 }?.let {
+                googleMap.moveCamera(
+                    CameraUpdateFactory.newLatLngZoom(
+                        LatLng(it.step!!.latitude!!, it.step.longitude!!),
+                        10f
+                    )
                 )
-            )
+            }
         }
         args.polylines?.forEach { polyline ->
             val polylineOptions = PolylineOptions()

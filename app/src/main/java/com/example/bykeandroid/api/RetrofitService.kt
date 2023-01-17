@@ -33,6 +33,7 @@ object ApiServices {
     lateinit var loginService: LoginService
     lateinit var excursionService: ExcursionService
     lateinit var pathService: PathService
+    lateinit var stepService: StepService
 
     init {
         loadServices()
@@ -42,6 +43,7 @@ object ApiServices {
         loginService = retrofit.create(LoginService::class.java)
         excursionService = retrofit.create(ExcursionService::class.java)
         pathService = retrofit.create(PathService::class.java)
+        stepService = retrofit.create(StepService::class.java)
     }
 
     private fun addCredentials(loginResponse: LoginResponse) {

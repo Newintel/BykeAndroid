@@ -22,18 +22,21 @@ import java.util.*
 class BleService(
     private val activity: MainActivity
 ) {
-    private var deviceMac : String? = null
-    private lateinit var bluetoothGatt : BluetoothGatt
+    private var deviceMac: String? = null
+    private lateinit var bluetoothGatt: BluetoothGatt
     private lateinit var comCharacteristic: BluetoothGattCharacteristic
     private var dataToSend: Array<ByteArray> = arrayOf()
     private var readData: ByteArray = byteArrayOf()
-    private var commandsCallback: EnumMap<Commands, (String?) -> Unit> = EnumMap(Commands::class.java)
-    private var onDeviceFound : (() -> Unit)? = null
-    private var onDeviceConnected : (() -> Unit)? = null
+    private var commandsCallback: EnumMap<Commands, (String?) -> Unit> =
+        EnumMap(Commands::class.java)
+    private var onDeviceFound: (() -> Unit)? = null
+    private var onDeviceConnected: (() -> Unit)? = null
     var isConnected: Boolean = false
+    var isScanning: Boolean = false
 
     private val bluetoothAdapter: BluetoothAdapter by lazy {
-        val bluetoothManager = activity.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+        val bluetoothManager =
+            activity.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
         bluetoothManager.adapter
     }
 
@@ -55,7 +58,10 @@ class BleService(
 
     private fun BluetoothGatt.printGattTable() {
         if (services.isEmpty()) {
-            Log.i("printGattTable", "No service and characteristic available, call discoverServices() first?")
+            Log.i(
+                "printGattTable",
+                "No service and characteristic available, call discoverServices() first?"
+            )
             return
         }
         services.forEach { service ->
@@ -63,7 +69,9 @@ class BleService(
                 separator = "\n|--",
                 prefix = "|--"
             ) { it.uuid.toString() }
-            Log.i("printGattTable", "\nService ${service.uuid}\nCharacteristics:\n$characteristicsTable"
+            Log.i(
+                "printGattTable",
+                "\nService ${service.uuid}\nCharacteristics:\n$characteristicsTable"
             )
         }
     }
@@ -71,6 +79,8 @@ class BleService(
     private val gattCallback = object : BluetoothGattCallback() {
         override fun onConnectionStateChange(gatt: BluetoothGatt, status: Int, newState: Int) {
             val deviceAddress = gatt.device.address
+            isScanning = false
+            isConnected = false
 
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 if (newState == BluetoothProfile.STATE_CONNECTED) {
@@ -85,7 +95,10 @@ class BleService(
                     gatt.close()
                 }
             } else {
-                Log.w("BluetoothGattCallback", "Error $status encountered for $deviceAddress! Disconnecting...")
+                Log.w(
+                    "BluetoothGattCallback",
+                    "Error $status encountered for $deviceAddress! Disconnecting..."
+                )
                 gatt.close()
             }
         }
@@ -115,7 +128,7 @@ class BleService(
             }
 
             val (command, length, info) = triple
-            if (command == Commands.NONE && length != 0){
+            if (command == Commands.NONE && length != 0) {
                 Log.i("BLE read", "Incomplete data")
                 read()
                 return
@@ -161,9 +174,13 @@ class BleService(
         }
     }
 
-    private fun bleWrite(data : ByteArray) {
+    private fun bleWrite(data: ByteArray) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            bluetoothGatt.writeCharacteristic(comCharacteristic, data, BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
+            bluetoothGatt.writeCharacteristic(
+                comCharacteristic,
+                data,
+                BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT
+            )
         } else {
             Log.i("write", "Must use deprecated write (API < 33)")
             comCharacteristic.value = data
@@ -181,10 +198,12 @@ class BleService(
 
     fun read() {
         Log.i("read", "Reading")
-        bluetoothGatt.readCharacteristic(comCharacteristic)
+        if (isConnected) {
+            bluetoothGatt.readCharacteristic(comCharacteristic)
+        }
     }
 
-    fun write(command : Commands, info : Coordinates? = null) {
+    fun write(command: Commands, info: Coordinates? = null) {
         if (command.hasInfo() && info == null) {
             throw Exception("Command should have info but no info was provided")
         }
@@ -205,28 +224,33 @@ class BleService(
 
     // -------------------------------- Utils --------------------------------
     fun startBleScan() {
+        if (isScanning) {
+            Log.i("startBleScan", "Already scanning")
+            return
+        }
+        isScanning = true
         bleScanner.startScan(null, scanSettings, scanCallback)
     }
 
-    fun isBluetoothEnabled() : Boolean {
+    fun isBluetoothEnabled(): Boolean {
         return bluetoothAdapter.isEnabled
     }
 
-    fun setDeviceMac(mac : String?) {
+    fun setDeviceMac(mac: String?) {
         deviceMac = mac
     }
 
-    fun onCommand(command : Commands, callback : (info : String?) -> Unit) : BleService {
+    fun onCommand(command: Commands, callback: (info: String?) -> Unit): BleService {
         commandsCallback[command] = callback
         return this
     }
 
-    fun onDeviceFound(callback : () -> Unit) : BleService {
+    fun onDeviceFound(callback: () -> Unit): BleService {
         onDeviceFound = callback
         return this
     }
 
-    fun onDeviceConnected(callback : () -> Unit) : BleService {
+    fun onDeviceConnected(callback: () -> Unit): BleService {
         onDeviceConnected = callback
         return this
     }
